@@ -1,0 +1,13 @@
+<div class="col-md-5 offset-md-1">
+  <div class="row">
+    <% for row in 7.downto(0) do %>
+      <div class="row">
+        <% for col in 0..7 do %>
+          <% is_black = (row + col) % 2 == 0 %>
+          <% square_class = is_black ? 'grey' : 'white' %>
+          <div class="col square <%= square_class %>" id='<%= "cord-#{col}-#{row}" %>'></div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

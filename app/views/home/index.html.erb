@@ -1,37 +1,9 @@
 <div class="row col-md-12 text-center mt-3 mb-1">
   <h2 class="mb-3">The Pawn Simulator</h2>
 
-  <div class="col-md-6">
-    <%= form_tag(root_path, method: :get, local: true) do %>
-      <div>
-        <label for="commands">Enter commands (one command per line):</label><br>
-        <%= text_area_tag(:commands, @commands.join("\n"), rows: 10, cols: 35) %>
-      </div>
-      <br>
-      <%= submit_tag('Submit', name: 'submit', class: 'btn btn-primary') %>
-      <br>
-    <% end %>
+  <%= render 'test_cases' %>
 
-    <div class="output offset-md-2 text-left mt-5">
-      <% if @output.present? %>
-        <h2>Output: <pre><%= @output %></pre></h2>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="col-md-5 offset-md-1">
-    <div class="row">
-      <% for row in 7.downto(0) do %>
-        <div class="row">
-          <% for col in 0..7 do %>
-            <% is_black = (row + col) % 2 == 0 %>
-            <% square_class = is_black ? 'grey' : 'white' %>
-            <div class="col square <%= square_class %>" id='<%= "cord-#{col}-#{row}" %>'></div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'pawn_board' %>
 </div>
 
 <script>
@@ -82,10 +54,40 @@
     movePawn(movementSequence);
   };
 
-  <% if @cordinates.present? %>
-    not_placed = document.getElementsByClassName('start').length <= 0
-    if (not_placed) {
-      call();
-    }
-  <% end %>
+  testCases = [
+      `PLACE 0,0,SOUTH,WHITE\nRIGHT\nMOVE 2\nLEFT\nMOVE 3\nRIGHT\nMOVE 1\nREPORT`,
+      `PLACE 2,3,WEST,BLACK\nLEFT\nMOVE\nMOVE\nRIGHT\nMOVE\nREPORT`,
+      `PLACE 3,1,SOUTH,BLACK\nMOVE 2\nRIGHT\nMOVE 3\nLEFT\nREPORT`,
+      `PLACE 1,1,EAST,WHITE\nMOVE\nMOVE\nLEFT\nMOVE\nREPORT`,
+      `PLACE 4,4,WEST,BLACK\nMOVE 2\nMOVE\nLEFT\nMOVE\nRIGHT\nMOVE\nREPORT`,
+      `PLACE 3,2,SOUTH,WHITE\nLEFT\nMOVE\nRIGHT\nMOVE 2\nREPORT`,
+      `PLACE 1,2,east,WHITE\nLEFT\nMOVE 2\nRIGHT\nMOVE 2\nMOVE\nleft\n move\nmove\nright\nmove\nREPORT`,
+      `PLACE 2,3,north,WHITE\nright\nMOVE 2\nleft\nMOVE\nMOVE\nright\n move\nmove\nREPORT`,
+      `PLACE 6,7,south,black\nMOVE 2\nright\nMOVE\nMOVE\nleft\n move\nmove\nREPORT`,
+      `PLACE 0,0,NORTH,WHITE\nMOVE 1\nREPORT\nPLACE 6,7,south,black\nMOVE 2\nright\nMOVE\nMOVE\nleft\n move\nmove\nREPORT`
+    ];
+
+  buttons = document.querySelectorAll('button[id^="testCase"]');
+
+  buttonEvents();
+
+  function buttonEvents() {
+    buttons.forEach((button, index) => {
+      button.addEventListener("click", () => {
+        handleButtonClick(index);
+      });
+    });
+  }
+
+  function handleButtonClick(index) {
+    let text_field = document.getElementById("commands");
+    let testCase = testCases[index];
+    text_field.value = testCase;
+  }
+
+  // Reattach the event listeners after a Turbo navigation
+  document.addEventListener("turbo:load", () => {
+    call();
+    buttonEvents();
+  });
 </script>

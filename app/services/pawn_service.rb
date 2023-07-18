@@ -23,6 +23,7 @@ class PawnService
         args = command[1].split(',')
         place(args[0].to_i, args[1].to_i, args[2], args[3])
         @first_move = true
+        @coordinates = []
       when 'MOVE'
         if @first_move
           move(move_squares(command[1]))

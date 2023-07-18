@@ -1,0 +1,11 @@
+<div class="col-md-6">
+  <%= form_tag(root_path, method: :get, local: true) do %>
+    <div>
+      <label for="commands">Enter commands (one command per line):</label><br>
+      <%= text_area_tag(:commands, @commands.join("\n"), rows: 10, cols: 30) %>
+    </div>
+    <br>
+    <%= submit_tag('Submit', name: 'submit', class: 'btn btn-primary') %>
+    <br>
+  <% end %>
+</div>

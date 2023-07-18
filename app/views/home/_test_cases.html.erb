@@ -1,0 +1,23 @@
+<div class="col-md-6">
+  <div class="test-case">
+    <div class="col-md-3">
+      <% (1..5).each do |btn_no| %>
+        <button class="test-btn <%= btn_no.eql?(1) ? 'mt-25' : '' %>" id="testCase<%= btn_no %>">Test Case <%= btn_no %></button>
+      <% end %>
+    </div>
+
+    <%= render 'form' %>
+
+    <div class="col-md-3">
+      <% (6..10).each do |btn_no| %>
+        <button class="test-btn <%= btn_no.eql?(6) ? 'mt-25' : '' %>" id="testCase<%= btn_no %>">Test Case <%= btn_no %></button>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="output offset-md-2 text-left mt-5">
+    <% if @output.present? %>
+      <h2>Output: <pre><%= @output %></pre></h2>
+    <% end %>
+  </div>
+</div>
