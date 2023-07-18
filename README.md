@@ -3,22 +3,50 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+# Assignment
 
-* Ruby version
+The Pawn Simulator: The application is a simulation of a Pawn moving on a chess board, of dimensions 8
+squares x 8 squares.
+
+## Installation
+
+This application uses the following Ruby and Rails version. 
+
+Ruby version 
+
+    ruby '3.1.1'
 
 * System dependencies
+  * Node Version 
+    `16.16.0`
 
-* Configuration
+  * Npm Version 
+    `8.11.0`
 
-* Database creation
+Rails version
 
-* Database initialization
+    rails '7.0.6'
 
-* How to run the test suite
+Follow these easy steps to install and start the app:
 
-* Services (job queues, cache servers, search engines, etc.)
+First, install the gems required by the application:
 
-* Deployment instructions
+    bundle
 
-* ...
+Next, execute the database migrations/schema setup:
+
+    bundle exec rake db:setup
+
+### Start the app
+
+Start the Rails server:
+
+    bundle exec rails server OR rails s
+
+We can check the landing page at
+
+    http://localhost:3000
+
+Here's a screenshot of the application in action:
+
+![Example Screenshot](app/assets/images/test-case-view.png)
