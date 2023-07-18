@@ -1,15 +1,91 @@
-<div class="container">
-  <h1>Bootstrap Test Page</h1>
-  <p>This is a simple test page to check Bootstrap styles.</p>
+<div class="row col-md-12 text-center mt-3 mb-1">
+  <h2 class="mb-3">The Pawn Simulator</h2>
 
-  <!-- Bootstrap Alerts -->
-  <div class="alert alert-primary" role="alert">
-    This is a primary alert—check it out!
+  <div class="col-md-6">
+    <%= form_tag(root_path, method: :get, local: true) do %>
+      <div>
+        <label for="commands">Enter commands (one command per line):</label><br>
+        <%= text_area_tag(:commands, @commands.join("\n"), rows: 10, cols: 35) %>
+      </div>
+      <br>
+      <%= submit_tag('Submit', name: 'submit', class: 'btn btn-primary') %>
+      <br>
+    <% end %>
+
+    <div class="output offset-md-2 text-left mt-5">
+      <% if @output.present? %>
+        <h2>Output: <pre><%= @output %></pre></h2>
+      <% end %>
+    </div>
   </div>
-  <div class="alert alert-secondary" role="alert">
-    This is a secondary alert—check it out!
-  </div>
-  <div class="alert alert-success" role="alert">
-    This is a success alert—check it out!
+
+  <div class="col-md-5 offset-md-1">
+    <div class="row">
+      <% for row in 7.downto(0) do %>
+        <div class="row">
+          <% for col in 0..7 do %>
+            <% is_black = (row + col) % 2 == 0 %>
+            <% square_class = is_black ? 'grey' : 'white' %>
+            <div class="col square <%= square_class %>" id='<%= "cord-#{col}-#{row}" %>'></div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
+
+<script>
+  window.addEventListener("load", function () {
+    call();
+  });
+
+  function call() {
+    let firstValue = [];
+    let lastValue = [];
+
+    function addDotToSquare(id, facing) {
+      const square = document.getElementById(id);
+
+      const dot = document.createElement("div");
+      dot.classList.add("dot");
+      if (firstValue[0] === id) {
+        dot.classList.add("start");
+      } else if (lastValue[0] === id) {
+        dot.classList.add("finished");
+      }
+
+      square.innerHTML = "";
+      square.appendChild(dot);
+
+      const arrow = document.createElement("i");
+      arrow.classList.add("arrow");
+      arrow.classList.add(facing);
+      if (firstValue[0] === id) {
+        arrow.classList.add("start");
+      } else if (lastValue[0] === id) {
+        arrow.classList.add("finished");
+      }
+      dot.appendChild(arrow);
+    }
+
+    function movePawn(datas) {
+      firstValue = datas[0];
+      lastValue = datas[datas.length - 1];
+
+      for (const data of datas) {
+        addDotToSquare(data[0], data[1]);
+      }
+    }
+
+    const movementSequence = <%= raw @cordinates.to_json %>;
+
+    movePawn(movementSequence);
+  };
+
+  <% if @cordinates.present? %>
+    not_placed = document.getElementsByClassName('start').length <= 0
+    if (not_placed) {
+      call();
+    }
+  <% end %>
+</script>
